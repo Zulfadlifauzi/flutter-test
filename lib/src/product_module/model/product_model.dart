@@ -5,19 +5,20 @@ class ProductModel {
   final String? title;
   final double? price;
   final String? description;
-  final String? category;
+  String? category;
   final String? image;
   final Rating? rating;
+  bool? value;
 
-  ProductModel({
-    this.id,
-    this.title,
-    this.price,
-    this.description,
-    this.category,
-    this.image,
-    this.rating,
-  });
+  ProductModel(
+      {this.id,
+      this.title,
+      this.price,
+      this.description,
+      this.category,
+      this.image,
+      this.rating,
+      this.value});
 
   factory ProductModel.fromRawJson(String str) =>
       ProductModel.fromJson(json.decode(str));
@@ -32,6 +33,7 @@ class ProductModel {
         category: json["category"]!,
         image: json["image"],
         rating: json["rating"] == null ? null : Rating.fromJson(json["rating"]),
+        value: json["value"] ?? false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -42,6 +44,7 @@ class ProductModel {
         "category": category,
         "image": image,
         "rating": rating?.toJson(),
+        "value": value,
       };
 }
 

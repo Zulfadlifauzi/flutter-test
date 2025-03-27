@@ -5,8 +5,12 @@ import '../../../data/services/dio_services.dart';
 import '../model/product_model.dart';
 
 class ProductRepository extends DioServices {
-  Future<List<ProductModel>> fetchProductIndexRepository() async {
-    final Response response = await dio.get('${ApiConstants.baseUrl}products');
+  Future<List<ProductModel>> fetchProductIndexRepository(
+      {String? productCategory}) async {
+    final Response response = await dio.get(
+        productCategory == '' || productCategory == 'null'
+            ? ApiConstants.productUrl
+            : '${ApiConstants.productUrl}/category/$productCategory');
     if (response.statusCode == 200) {
       final List<dynamic> productModelResponse = response.data;
       return productModelResponse
