@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_myeg/src/product_module/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../cart_module/presentation/cart_screen.dart';
+import '../components/product_index_search_components.dart';
 import '../model/product_model.dart';
 import 'product_show_screen.dart';
 
@@ -12,20 +12,6 @@ class ProductIndexScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const CartScreen()));
-            },
-            icon: const Icon(
-              Icons.shopping_cart_outlined,
-              color: Colors.black,
-            ),
-          ),
-        ],
-      ),
       body: SafeArea(
         child: ChangeNotifierProvider(
           create: (_) => ProductProvider()..fetchProductIndexProvider(),
@@ -35,31 +21,8 @@ class ProductIndexScreen extends StatelessWidget {
                 height: 10,
               ),
               Consumer<ProductProvider>(builder: (context, value, _) {
-                return SizedBox(
-                  width: MediaQuery.sizeOf(context).width,
-                  height: 40,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    separatorBuilder: (context, index) => const SizedBox(
-                      width: 10,
-                    ),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: value.getProductCategory.length,
-                    itemBuilder: (context, index) {
-                      return ChoiceChip(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        label: Text(
-                          value.getProductCategory[index].category.toString(),
-                        ),
-                        selected:
-                            value.getProductCategory[index].value ?? false,
-                        onSelected: (values) {
-                          value.setProductCategory(index);
-                        },
-                      );
-                    },
-                  ),
+                return ProductIndexSearchComponents(
+                  productProviderInstance: value,
                 );
               }),
               Consumer<ProductProvider>(

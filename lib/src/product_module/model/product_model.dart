@@ -5,10 +5,10 @@ class ProductModel {
   final String? title;
   final double? price;
   final String? description;
-  String? category;
+  final String? category;
   final String? image;
   final Rating? rating;
-  bool? value;
+  final bool? value;
 
   ProductModel(
       {this.id,

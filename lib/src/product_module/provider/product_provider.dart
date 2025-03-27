@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test_myeg/src/product_module/model/product_model.dart';
 
 import '../repository/product_repository.dart';
@@ -8,55 +9,29 @@ class ProductProvider extends ProductRepository {
   List<ProductModel> _productModel = [];
   List<ProductModel> get productModel => _productModel;
 
+  final TextEditingController _setSearchController = TextEditingController();
+  TextEditingController get getSearchController => _setSearchController;
+
   final ProductModel _selectedProductCategory = ProductModel();
 
   Future<void> fetchProductIndexProvider() async {
-    setLoading(true);
     try {
-      final List<ProductModel> productModelResponse =
+      setLoading(true);
+      List<ProductModel> productModelResponse =
           await fetchProductIndexRepository(
               productCategory:
                   _selectedProductCategory.category.toString().toLowerCase());
-      _productModel = productModelResponse;
+
+      _productModel = productModelResponse.where((item) {
+        return item.title?.toLowerCase().contains(_setSearchController.text) ??
+            false;
+      }).toList();
     } catch (e) {
       log(e.toString());
     } finally {
       notifyListeners();
       setLoading(false);
     }
-  }
-
-  Future<void> setProductCategory(int selectedIndex) async {
-    bool isSelected = _productCategory[selectedIndex].value ?? false;
-    _productCategory[selectedIndex].value = !isSelected;
-
-    if (isSelected) {
-      await fetchProductIndexProvider();
-      await setProductFilteredCategory(selectedProductCategory: '');
-    } else {
-      _selectedProductCategory.category =
-          _productCategory[selectedIndex].category;
-      await setProductFilteredCategory(
-          selectedProductCategory:
-              _productCategory[selectedIndex].category.toString());
-    }
-    notifyListeners();
-  }
-
-  Future<void> setProductFilteredCategory(
-      {String? selectedProductCategory}) async {
-    if (selectedProductCategory.toString().isNotEmpty) {
-      for (var element in _productCategory) {
-        element.value = element.category == selectedProductCategory;
-      }
-      await fetchProductIndexProvider();
-    } else {
-      for (var element in _productCategory) {
-        element.value = false;
-      }
-    }
-    _selectedProductCategory.category = '';
-    notifyListeners();
   }
 
   ProductModel _productShowModel = ProductModel();
@@ -83,4 +58,16 @@ class ProductProvider extends ProductRepository {
     ProductModel(category: "Women's clothing", value: false),
   ];
   List<ProductModel> get getProductCategory => _productCategory;
+
+  Future<void> searchProductProvider(String query) async {
+    _setSearchController.text = query;
+    await fetchProductIndexProvider();
+    notifyListeners();
+  }
+
+  Future<void> clearSearchControllerProvider() async {
+    _setSearchController.clear();
+    await fetchProductIndexProvider();
+    notifyListeners();
+  }
 }
