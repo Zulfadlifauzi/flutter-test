@@ -12,8 +12,25 @@ class ProductProvider extends ProductRepository {
     setLoading(true);
     try {
       final List<ProductModel> productModelResponse =
-          await fetchProductIndexDataSource();
+          await fetchProductIndexRepository();
       _productModel = productModelResponse;
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      notifyListeners();
+      setLoading(false);
+    }
+  }
+
+  ProductModel _productShowModel = ProductModel();
+  ProductModel get productShowModel => _productShowModel;
+
+  Future<void> fetchProductShowProvider(String productId) async {
+    setLoading(true);
+    try {
+      final ProductModel productModelShowResponse =
+          await fetchProductShowRepository(productId);
+      _productShowModel = productModelShowResponse;
     } catch (e) {
       log(e.toString());
     } finally {
