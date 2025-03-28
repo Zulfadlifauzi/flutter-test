@@ -4,14 +4,27 @@ A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Flutter Test
 
-A few resources to get you started if this is your first Flutter project:
+[Before Start]
+1. Please ensure you have a GitHub account. If no, please register one here https://github.com/. :thumbsup: 
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+[Test]
+1. Initialize a new repository for the test, you may name it as flutter-test. :thumbsup: 
+2. Create a feature branch call product-list.:thumbsup: 
+3. In this product-list branch, do the following:
+    a. get product list from https://github.com/keikaavousi/fake-store-api?tab=readme-ov-file :thumbsup:
+    b. display the list in UI with name, price and ratingpr :thumbsup:
+4. Push the changes and create a Pull Request (PR) for this.  :thumbsup:
+5. Create another feature branch call product-details. :thumbsup:
+6. In this product-details branch, do the following:
+    a. The product list is clickable and will redirect to the product details page. :thumbsup:
+    a. A proper UI layout of the product details page showing the product name, description, price, image and rating. :thumbsup:
+    b. Allow the image to be zoomable. :thumbsup:
+7. Push the changes and create a PR for this. :thumbsup:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# flutter-test
+
+[Additional Points]
+1. The product is able to be add into cart. After adding the item into cart, once I close the app and reopen, it should still be inside the cart. I should also able to remove it from the cart. :thumbsup:
+2. I am able to search the products. :thumbsup:
+3. I am able to filter by category. :thumbsup:
