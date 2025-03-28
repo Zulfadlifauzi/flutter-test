@@ -9,6 +9,7 @@ class ProductModel {
   final String? image;
   final Rating? rating;
   final bool? value;
+  int? quantity;
 
   ProductModel(
       {this.id,
@@ -18,7 +19,8 @@ class ProductModel {
       this.category,
       this.image,
       this.rating,
-      this.value});
+      this.value,
+      this.quantity});
 
   factory ProductModel.fromRawJson(String str) =>
       ProductModel.fromJson(json.decode(str));
@@ -34,6 +36,7 @@ class ProductModel {
         image: json["image"],
         rating: json["rating"] == null ? null : Rating.fromJson(json["rating"]),
         value: json["value"] ?? false,
+        quantity: json["quantity"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -45,6 +48,7 @@ class ProductModel {
         "image": image,
         "rating": rating?.toJson(),
         "value": value,
+        "quantity": quantity,
       };
 }
 
