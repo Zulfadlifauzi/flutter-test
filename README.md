@@ -28,3 +28,26 @@ Flutter Test
 1. The product is able to be add into cart. After adding the item into cart, once I close the app and reopen, it should still be inside the cart. I should also able to remove it from the cart. :thumbsup:
 2. I am able to search the products. :thumbsup:
 3. I am able to filter by category. :thumbsup:
+
+
+
+
+## Getting Started
+https://github.com/user-attachments/assets/1bc3de4f-6c4d-4ad5-9bd6-0de723a141e0
+
+
+## Getting Started
+https://github.com/user-attachments/assets/d585b229-94df-45ca-acff-8c1dc262a2e2
+
+
+## Getting Started
+https://github.com/user-attachments/assets/fc864aae-6730-42cd-8e78-f4595f21815d
+
+
+## Getting Started
+https://github.com/user-attachments/assets/fe645a8b-3ff7-4398-b46b-790d8dc6ff6d
+
+
+## Getting Started
+https://github.com/user-attachments/assets/0dd58af5-7c34-4fc9-9ac0-7792b2efcfa8
+
