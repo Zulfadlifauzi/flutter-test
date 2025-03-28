@@ -27,9 +27,9 @@ class ProductShowScreen extends StatelessWidget {
               return ListView(
                 children: [
                   InteractiveViewer(
-                    panEnabled: true, // Enable panning
-                    minScale: 1.0, // Minimum zoom scale
-                    maxScale: 4.0, // Maximum zoom scale
+                    panEnabled: true,
+                    minScale: 1.0,
+                    maxScale: 4.0,
                     child: Image.network(
                       product.image.toString(),
                       width: MediaQuery.sizeOf(context).width,

@@ -79,35 +79,29 @@ class ProductProvider extends ProductRepository {
     ProductModel productModelData,
   ) async {
     try {
-      // Read the existing product cart from SharedPreferences
       final List<Map<String, dynamic>> existingCart =
           await SharedPreferencesMixin.readListMapSharedPreferences('product');
 
-      // Convert the existing cart to a list of maps
       List<Map<String, dynamic>> cartList =
           existingCart.cast<Map<String, dynamic>>();
 
       bool isProductInCartExist = false;
       for (var item in cartList) {
         if (item['id'] == productModelData.id) {
-          item['quantity'] =
-              (item['quantity'] ?? 0) + 1; // Increment quantity if exists
+          item['quantity'] = (item['quantity'] ?? 0) + 1;
           isProductInCartExist = true;
           break;
         }
       }
 
       if (!isProductInCartExist) {
-        // If the product is not already in the cart, add it with quantity 1
         productModelData.quantity = 1;
         cartList.add(productModelData.toJson());
       }
 
-      // Save the updated cart back to SharedPreferences
       await SharedPreferencesMixin.saveListMapSharedPreferences(
           'product', cartList);
 
-      // Update the local _productCart list
       _productCart =
           cartList.map((json) => ProductModel.fromJson(json)).toList();
 
@@ -151,8 +145,6 @@ class ProductProvider extends ProductRepository {
         _productCart[index].quantity = _productCart[index].quantity! - 1;
         updateProductQuantityProvider(index);
       } else {
-        print('run here');
-
         await SharedPreferencesMixin.removeSingleDataMapListSharedPreferences(
             'product', index);
         _productCart.removeAt(index);
@@ -186,7 +178,7 @@ class ProductProvider extends ProductRepository {
   int getProductQuantity(int productId) {
     final productInCart = _productCart.firstWhere(
       (cartItem) => cartItem.id == productId,
-      orElse: () => ProductModel(quantity: 0), // Default to 0 if not found
+      orElse: () => ProductModel(quantity: 0),
     );
     return productInCart.quantity ?? 0;
   }

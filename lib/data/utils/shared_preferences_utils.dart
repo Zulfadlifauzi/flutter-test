@@ -41,7 +41,6 @@ abstract mixin class SharedPreferencesMixin {
       }
     } catch (e) {
       // Log the error and return an empty list
-      print('Error reading list from SharedPreferences: $e');
       return [];
     }
   }
