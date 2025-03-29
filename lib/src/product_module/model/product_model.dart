@@ -5,10 +5,10 @@ class ProductModel {
   final String? title;
   final double? price;
   final String? description;
-  final String? category;
+  String? category;
   final String? image;
   final Rating? rating;
-  final bool? value;
+  bool? value;
   int? quantity;
 
   ProductModel(
