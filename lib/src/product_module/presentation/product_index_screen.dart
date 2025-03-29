@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test_myeg/src/product_module/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../cart_module/presentation/cart_screen.dart';
 import '../model/product_model.dart';
 import 'product_show_screen.dart';
 
@@ -12,20 +11,6 @@ class ProductIndexScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const CartScreen()));
-            },
-            icon: const Icon(
-              Icons.shopping_cart_outlined,
-              color: Colors.black,
-            ),
-          ),
-        ],
-      ),
       body: SafeArea(
         child: ChangeNotifierProvider(
           create: (_) => ProductProvider()..fetchProductIndexProvider(),
