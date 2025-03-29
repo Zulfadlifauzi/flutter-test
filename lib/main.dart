@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'data/utils/shared_preferences_utils.dart';
 import 'src/product_module/presentation/product_index_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferencesMixin.init();
   runApp(const MyApp());
 }
 

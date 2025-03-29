@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_myeg/src/cart_module/presentation/cart_screen.dart';
 import 'package:flutter_test_myeg/src/product_module/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -10,15 +11,33 @@ class ProductIndexScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: ChangeNotifierProvider(
-          create: (_) => ProductProvider()..fetchProductIndexProvider(),
+    return ChangeNotifierProvider(
+      create: (_) => ProductProvider()..fetchProductIndexProvider(),
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            Consumer<ProductProvider>(builder: (context, value, _) {
+              value.readProductCartProvider();
+              return Badge(
+                offset: const Offset(-5, -2),
+                label: Text(value.getProductCart.length.toString()),
+                child: IconButton(
+                  icon: const Icon(Icons.shopping_cart_outlined),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CartScreen()));
+                  },
+                ),
+              );
+            })
+          ],
+        ),
+                body:
+         SafeArea(
           child: Column(
             children: [
-              const SizedBox(
-                height: 10,
-              ),
               Consumer<ProductProvider>(builder: (context, value, _) {
                 return SizedBox(
                   width: MediaQuery.sizeOf(context).width,
@@ -40,7 +59,7 @@ class ProductIndexScreen extends StatelessWidget {
                         selected:
                             value.getProductCategory[index].value ?? false,
                         onSelected: (values) {
-                          value.setProductCategory(index);
+                          // value.setProductCategory(index);
                         },
                       );
                     },
@@ -51,15 +70,19 @@ class ProductIndexScreen extends StatelessWidget {
                 builder: (context, value, _) {
                   if (value.isLoading) {
                     return const Center(child: CircularProgressIndicator());
-                  } else if (value.productModel.isEmpty) {
+                  } else if (value.getProductModel.isEmpty) {
                     return const Center(child: Text('No products available'));
                   } else {
-                    return Expanded(
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        await value.fetchProductIndexProvider();
+                        await value.readProductCartProvider();
+                      },
                       child: ListView.builder(
-                        itemCount: value.productModel.length,
+                        itemCount: value.getProductModel.length,
                         itemBuilder: (context, index) {
                           final ProductModel product =
-                              value.productModel[index];
+                              value.getProductModel[index];
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -76,7 +99,7 @@ class ProductIndexScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10)),
                               padding: const EdgeInsets.all(10),
                               child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(15),
@@ -155,6 +178,64 @@ class ProductIndexScreen extends StatelessWidget {
                                           maxLines: 3,
                                           overflow: TextOverflow.ellipsis,
                                         ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            IconButton(
+                                                style: IconButton.styleFrom(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 10, bottom: 10),
+                                                  tapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                  minimumSize: const Size(0, 0),
+                                                ),
+                                                onPressed: () {
+                                                  value
+                                                      .removeQuantityProductProvider(
+                                                          index);
+                                                },
+                                                icon: const Icon(
+                                                  Icons
+                                                      .remove_circle_outline_outlined,
+                                                  size: 20,
+                                                )),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(value
+                                                .getProductQuantity(product.id!)
+                                                .toString()),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            IconButton(
+                                              style: IconButton.styleFrom(
+                                                padding: const EdgeInsets.only(
+                                                    top: 10, bottom: 10),
+                                                tapTargetSize:
+                                                    MaterialTapTargetSize
+                                                        .shrinkWrap,
+                                                minimumSize: const Size(0, 0),
+                                              ),
+                                              icon: const Icon(
+                                                Icons
+                                                    .add_circle_outline_outlined,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                value.addProductToCartProvider(
+                                                    value.getProductModel[
+                                                        index]);
+                                              },
+                                            ),
+                                          ],
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -171,7 +252,9 @@ class ProductIndexScreen extends StatelessWidget {
             ],
           ),
         ),
+     
       ),
     );
   }
 }
+
