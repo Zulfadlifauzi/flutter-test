@@ -25,6 +25,7 @@ class ProductShowScreen extends StatelessWidget {
             } else {
               final ProductModel product = value.productShowModel;
               return ListView(
+                physics: const ClampingScrollPhysics(),
                 children: [
                   InteractiveViewer(
                     panEnabled: true,
