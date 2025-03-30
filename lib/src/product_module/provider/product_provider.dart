@@ -63,6 +63,39 @@ class ProductProvider extends ProductRepository {
   ];
   List<ProductModel> get getProductCategory => _productCategory;
 
+  Future<void> setProductCategory(int selectedIndex) async {
+    bool isSelected = _productCategory[selectedIndex].value ?? false;
+    _productCategory[selectedIndex].value = !isSelected;
+
+    if (isSelected) {
+      await fetchProductIndexProvider();
+      await setProductFilteredCategory(selectedProductCategory: '');
+    } else {
+      _selectedProductCategory.category =
+          _productCategory[selectedIndex].category;
+      await setProductFilteredCategory(
+          selectedProductCategory:
+              _productCategory[selectedIndex].category.toString());
+    }
+    notifyListeners();
+  }
+
+  Future<void> setProductFilteredCategory(
+      {String? selectedProductCategory}) async {
+    if (selectedProductCategory.toString().isNotEmpty) {
+      for (var element in _productCategory) {
+        element.value = element.category == selectedProductCategory;
+      }
+      await fetchProductIndexProvider();
+    } else {
+      for (var element in _productCategory) {
+        element.value = false;
+      }
+    }
+    _selectedProductCategory.category = '';
+    notifyListeners();
+  }
+
   Future<void> searchProductProvider(String query) async {
     _setSearchController.text = query;
     await fetchProductIndexProvider();
